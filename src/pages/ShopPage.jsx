@@ -26,12 +26,12 @@ const ShopPage = () => {
   }, [priceRange]);
 
   const filteredProducts = useMemo(() => {
-    return fetchedData?.filter((item) => item.finalprice <= parseInt(rangeVal));
+    return fetchedData?.filter((item) => item.price <= parseInt(rangeVal));
   }, [fetchedData, rangeVal]);
 
   return (
-    <section className="p-4 lg:flex lg:justify-around">
-      <div id="filter-section" className="lg:mt-20 lg:p-2 m-4">
+    <section className="grid grid-cols-12 max-w-[100dvw] ">
+      <div id="filter-section" className="col-span-2 w-full lg:mt-20 lg:p-2 m-4">
         <h3 className="text-center text-xl font-bold">Filter By Price</h3>
         <input
           className="w-full"
@@ -42,12 +42,12 @@ const ShopPage = () => {
           value={rangeVal}
         />
         <div className="flex justify-between text-gray-600 text-sm items-center">
-          <span>₹{minVal}</span>
-          <span>₹{maxVal}</span>
+          <span>${minVal}</span>
+          <span>${maxVal}</span>
         </div>
       </div>
 
-      <div id="shop-page">
+      <div id="shop-page" className="col-span-10">
         <div className="heading text-center sticky top-0 md:block">
           <h1 className="text-3xl font-bold">Shop Page</h1>
           <span className="text-sm text-gray-500">
@@ -67,7 +67,6 @@ const ShopPage = () => {
                     img={product?.thumbnail}
                     title={product?.product}
                     price={product?.price}
-                    finalPrice={product?.finalprice}
                     rating={product?.rating}
                   />
                 </Link>

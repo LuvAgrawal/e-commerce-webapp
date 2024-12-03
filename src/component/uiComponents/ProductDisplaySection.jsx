@@ -23,9 +23,9 @@ const ProductCard = ({ product }) => {
       </h2>
       <p className="text-gray-800 text-sm">
         <span className="text-gray-500">
-          M.R.P <span className="line-through"> ₹{product?.price}</span>{" "}
+          M.R.P <span className="line-through"> ${product?.price}</span>{" "}
         </span>
-        ₹{product?.finalprice}
+        ${product?.finalprice}
       </p>
     </div>
   );

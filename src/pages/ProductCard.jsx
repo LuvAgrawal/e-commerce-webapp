@@ -34,11 +34,8 @@ const ProductCard = ({ img, title, price, finalPrice, rating }) => {
               </span>
             </div>
             <div id="price" className="">
-              <span className="text-xl font-bold line-through text-gray-700">
-                ₹{price}
-              </span>
               <span className="text-2xl font-bold text-white">
-                ₹{finalPrice}
+                ${price}
               </span>
             </div>
           </div>
