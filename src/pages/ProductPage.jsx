@@ -49,7 +49,7 @@ const ProductPage = () => {
               {selectedProduct?.category}
             </span>
             <span className="text-2xl font-semibold">
-              ₹{selectedProduct?.finalprice}
+              ${selectedProduct?.finalprice}
             </span>
           </div>
           <div className="my-3 flex items-center">
