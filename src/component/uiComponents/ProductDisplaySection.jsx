@@ -2,11 +2,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-function discountCalculator(mrp, sale) {
-  const disPercent = Math.round(((mrp - sale) / mrp) * 100);
-  return disPercent;
-}
-
 const ProductCard = ({ product }) => {
   return (
     <div className="flex flex-col m-2 items-center justify-center">
@@ -16,16 +11,13 @@ const ProductCard = ({ product }) => {
         alt="Product"
       />
       <span className="bg-red-600 p-1 rounded-sm text-sm items-start mt-5 text-white">
-        {discountCalculator(product.price, product.finalprice)}% off!
+        {product.discountPercentage}% off!
       </span>
       <h2 className="mt-1 uppercase text-center text-xl font-semibold">
-        {product?.product}
+        {product?.title}
       </h2>
       <p className="text-gray-800 text-sm">
-        <span className="text-gray-500">
-          M.R.P <span className="line-through"> ${product?.price}</span>{" "}
-        </span>
-        ${product?.finalprice}
+        ${product?.price}
       </p>
     </div>
   );
@@ -47,7 +39,7 @@ const ProductDisplaySection = () => {
         <Link
           key={index}
           className="flex justify-center items-center"
-          to={`/product/${item?.product}`}
+          to={`/product/${item?._id}`}
         >
           <ProductCard product={item} />
         </Link>

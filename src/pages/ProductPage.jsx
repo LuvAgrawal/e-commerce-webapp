@@ -3,16 +3,25 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 // import ProductContext from "../component/contextApi/ProductContext";
 const ProductPage = () => {
-  const fetchedData  = useSelector((state)=>state.product.product)
-  const { name } = useParams();
+  const fetchedData = useSelector((state) => state.product.product)
+  // console.log("Fetch data", fetchedData)
+  const { id } = useParams();
+  // const param = useParams();
+  // console.log("param",param)
 
-  let selectedProduct = fetchedData.find((item) => item.product.includes(name));
-  console.log(selectedProduct);
+  // console.log("id",id)
+
+  let selectedProduct = fetchedData.find((item) => {
+    // console.log("item",item)
+    return item._id ==id 
+  });
+  // console.log(item)
+  console.log("Selected Prod", selectedProduct);
 
   return (
     <>
-      <div className="flex md:flex-row flex-col justify-center">
-        <div className="md:p-4 m-2 overflow-hidden">
+      <div className="flex flex-col justify-center md:flex-row">
+        <div className="m-2 overflow-hidden md:p-4">
           <div className="flex justify-center">
             <img
               src={selectedProduct?.thumbnail}
@@ -20,7 +29,7 @@ const ProductPage = () => {
               alt="main Product"
             />
           </div>
-          <div className="flex my-3 gap-4 overflow-auto border-2 border-gray-400 bg-white rounded-lg">
+          <div className="flex justify-center my-3 gap-4 overflow-auto border-2 border-gray-400 bg-white rounded-lg w-fit">
             {selectedProduct?.images.length > 0 ? (
               selectedProduct?.images?.map((imageSrc, i) => (
                 <img
@@ -38,25 +47,25 @@ const ProductPage = () => {
         </div>
         <div className="md:p-4 flex flex-col items-center justify-center md:m-2 md:max-w-sm">
           <h2 className="text-4xl uppercase text-center font-bold">
-            {selectedProduct?.product}
+            {selectedProduct?.title}
           </h2>
           <div className="text-center">
             <span className="text-sm text-gray-600">
-              {selectedProduct?.discription}
+              {selectedProduct?.description}
             </span>
             <span className="my-1 block">
               <strong>Category: </strong>
               {selectedProduct?.category}
             </span>
             <span className="text-2xl font-semibold">
-              ${selectedProduct?.finalprice}
+              ${selectedProduct?.price}
             </span>
           </div>
           <div className="my-3 flex items-center">
             <button className="border rounded-lg px-3 bg-gray-200 py-1">
               -
             </button>
-            <span className="border px-3 py-2">Value</span>
+            <span className="border px-3 py-2">{selectedProduct?.minimumOrderQuantity}</span>
             <button className="border rounded-lg px-3 bg-gray-200 py-1">
               +
             </button>

@@ -21,7 +21,7 @@ const ProductCard = ({ img, title, price, finalPrice, rating }) => {
           />
         </div>
         <div id="details" className="p-2 rounded-lg">
-          <h5 className="text-2xl uppercase overflow-hidden font-bold text-white text-center">
+          <h5 className="text-2xl uppercase line-clamp-1 font-bold text-white text-center max-h-8">
             {title}
           </h5>
           <div className="rating-price flex items-center justify-between mt-4">
@@ -34,7 +34,7 @@ const ProductCard = ({ img, title, price, finalPrice, rating }) => {
               </span>
             </div>
             <div id="price" className="">
-              <span className="text-2xl font-bold text-white">
+              <span className="text-xl font-bold text-blue-950">
                 ${price}
               </span>
             </div>
