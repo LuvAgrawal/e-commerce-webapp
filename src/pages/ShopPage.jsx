@@ -1,7 +1,8 @@
-import { useEffect, useState, useMemo } from "react";
-import ProductCard from "./ProductCard";
+import { useEffect, useState, useMemo, Suspense, lazy } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+const ProductCard = lazy(()=> import("./ProductCard"))
+
 
 const ShopPage = () => {
   const fetchedData = useSelector((state) => state.product.product) || []; // Ensure it's always an array
@@ -69,6 +70,7 @@ const ShopPage = () => {
         <div className="m-4 border-2 p-2 min-h-[60vh] flex justify-center rounded-3xl">
           {filteredProducts.length ? (
             <div className="grid gap-4 grid-cols-1 px-2 w-full lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+              <Suspense fallback={<h1>Loading...</h1>}>
               {filteredProducts
                 .slice((page - 1) * itemsPerPage, page * itemsPerPage)
                 .map((product, index) => (
@@ -85,6 +87,7 @@ const ShopPage = () => {
                     />
                   </Link>
                 ))}
+                </Suspense>
             </div>
           ) : (
             <h4 className="text-5xl h-full my-auto font-extrabold text-center">
