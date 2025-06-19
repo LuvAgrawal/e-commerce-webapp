@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate } from "react-router-dom";
 import { loginLocal } from "../redux/auth/authSlice";
+import { useState } from "react";
 
 const LoginPage = () => {
   const {
@@ -14,25 +15,35 @@ const LoginPage = () => {
   } = useForm();
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  async function loginRequest(formRequest) {
-    const response = await axios.get(
-      `http://localhost:8080/allUsers?mobile=${formRequest.number}`
-    );
+  const [isDisabled, setIsDisabled] = useState(false);
 
-    if (response.data.length) {
-      if (response.data[0].password === formRequest.password) {
-        delete response.data[0].password;
-        dispatch(loginLocal(response.data[0]));
-        window.location.pathname = "/";
+  // Login Request
+  async function loginRequest(formRequest) {
+    setIsDisabled(true);
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8080/users/login`,
+        formRequest
+      );
+
+      // Check if user is found
+      if (response.data.status) {
+        dispatch(loginLocal(response.data.data));
+        window.location.assign("/");
         reset();
-      } else {
-        alert("Invalid Credentials");
       }
-    } else {
-      const goToRegister = window.confirm("User Doesn't exist! Register Now?");
-      if (goToRegister) {
-        window.location.pathname = "/register";
+
+      setIsDisabled(false);
+    } catch (error) {
+      window.alert(error.response.data.message);
+      if (error.response.data.message === "User not found") {
+        if (window.confirm("User Doesn't exist! Register Now?")) {
+          window.location.assign("/register");
+        }
       }
+      setIsDisabled(false);
+      return;
     }
   }
 
@@ -117,8 +128,11 @@ const LoginPage = () => {
             <ErrorMessage errors={errors} name="number" />
             <ErrorMessage errors={errors} name="password" />
           </span>
-          <button className="bg-indigo-100 focus:shadow-outline my-2 flex w-full max-w-xs items-center justify-center rounded-lg py-3 font-bold text-gray-900 shadow-sm transition-all duration-300 ease-in-out focus:shadow-sm focus:outline-none hover:shadow">
-            <span className="ml-4"> Login </span>
+          <button
+            disabled={isDisabled}
+            className="bg-indigo-100 focus:shadow-outline my-2 flex w-full max-w-xs items-center justify-center rounded-lg py-3 font-bold text-gray-900 shadow-sm transition-all duration-300 ease-in-out focus:shadow-sm focus:outline-none hover:shadow"
+          >
+            {isDisabled ? `Please Wait...` : `Login`}
           </button>
 
           <div className="my-2">

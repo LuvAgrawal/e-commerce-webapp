@@ -10,7 +10,7 @@ export const fetchAllProductsAsync = createAsyncThunk(
   "products/fetchProducts",
   async () => {
     const response = await fetchAllProductsAPI();
-    return response;
+    return response.data;
   }
 );
 

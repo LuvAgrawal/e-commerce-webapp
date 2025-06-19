@@ -13,12 +13,10 @@ const ProductCard = ({ product }) => {
       <span className="bg-red-600 p-1 rounded-sm text-sm items-start mt-5 text-white">
         {product.discountPercentage}% off!
       </span>
-      <h2 className="mt-1 uppercase text-center text-xl font-semibold">
+      <h2 className="mt-1 capitalize text-center text-xl font-semibold">
         {product?.title}
       </h2>
-      <p className="text-gray-800 text-sm">
-        ${product?.price}
-      </p>
+      <p className="text-gray-800 text-sm">${product?.price}</p>
     </div>
   );
 };
@@ -35,15 +33,31 @@ const ProductDisplaySection = () => {
       <h1 className="text-center font-[cursive] h-fit lg:h-9 text-3xl font-semibold col-span-full">
         Featured Products!
       </h1>
-      {featuredProducts?.map((item, index) => (
-        <Link
-          key={index}
-          className="flex justify-center items-center"
-          to={`/product/${item?._id}`}
-        >
-          <ProductCard product={item} />
-        </Link>
-      ))}
+      {featuredProducts ? (
+        featuredProducts?.map((item, index) => (
+          <Link
+            key={index}
+            className="flex justify-center items-center"
+            to={`/product/${item?._id}`}
+          >
+            <ProductCard product={item} />
+          </Link>
+        ))
+      ) : (
+        <>
+          <h1 className="text-center text-2xl font-semibold col-span-full text-red-500">
+            No products found!
+          </h1>
+          <button
+            className="bg-blue-500 text-white p-2 rounded-md col-span-full"
+            onClick={() => {
+              window.location.reload();
+            }}
+          >
+            Refresh
+          </button>
+        </>
+      )}
     </div>
   );
 };

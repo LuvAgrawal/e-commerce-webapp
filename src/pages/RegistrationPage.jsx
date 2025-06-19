@@ -15,54 +15,43 @@ const RegistrationPage = () => {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   const [isDisabled, setIsDisabled] = useState(false);
 
-  //1) Form Response is first Send here
+  //1) Register User
   async function registerUser(submitData) {
     setIsDisabled(true);
-
-    // Condition to check existing users on the basis of Phone Number obtained from form data
-    const res = await axios.get(
-      `http://localhost:8080/allUsers?mobile=${submitData.mobile}`
-    );
-    if (res.data.length) {
-      const goToLogin = window.confirm(
-        "User Already Exists! Do You want to login?"
-      );
+    try {
+      if (submitData.password === submitData.confirmPassword) {
+        delete submitData.confirmPassword;
+        //Send data to server if confirm password condition passes
+        postUser(submitData);
+      } else {
+        alert("Passwords Doesn't Match");
+        setIsDisabled(false);
+        return;
+      }
+    } catch (error) {
       setIsDisabled(false);
-      if (goToLogin) {
-        window.location.pathname = "/login";
-      } else reset();
       return;
-    } else {
-      formValidation(submitData);
-      reset();
     }
   }
-
-  //2) Form Validation if user already doesn't exist
-  function formValidation(formData) {
-    if (formData.password === formData.confirmPassword) {
-      delete formData.confirmPassword;
-      postUser(formData); //Send data to server if confirm password condition passes
-    } else {
-      alert("Passwords Doesn't Match");
-      return false;
-    }
-  }
-
-  //3) Posting Data to API/Server/Database
+  
+  //2) Posting Data to API/Server/Database
   async function postUser(data) {
-    await axios.post("http://localhost:8080/allUsers", data);
+    try {
+      await axios.post("http://localhost:8080/users/register", data);
+    } catch (error) {
+      window.alert(error.response.data.message);
+      setIsDisabled(false);
+      return;
+    }
     const goToLogin = window.confirm(
       "Registration Successful! Do You want to login?"
     );
     setIsDisabled(false);
-    if (goToLogin) {
-      window.location.pathname = "/login";
-    } else reset();
+    goToLogin ? (window.location.pathname = "/login") : reset();
   }
 
   return (
-    <div className="flex w-full min-h-[80vh] items-center justify-center">
+    <div className="flex w-full min-h-[80vh] items-center justify-center py-10">
       {isLoggedIn ? (
         <Navigate to={"/"} />
       ) : (
@@ -81,16 +70,16 @@ const RegistrationPage = () => {
             <div id="form-inputs " className="w-full">
               <div className="my-1 w-full md:w-3/4 lg:w-1/2 md:mx-auto">
                 <label
-                  htmlFor="name"
+                  htmlFor="fullName"
                   className="cursor-text text-sm text-gray-500"
                 >
                   Enter Your Full Name
                 </label>
                 <span className="text-red-500 ml-7">
-                  <ErrorMessage errors={errors} name="name" />
+                  <ErrorMessage errors={errors} name="fullName" />
                 </span>
                 <input
-                  {...register("name", {
+                  {...register("fullName", {
                     required: { value: true, message: "Name is required" },
                   })}
                   type="text"

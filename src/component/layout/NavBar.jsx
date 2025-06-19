@@ -62,7 +62,7 @@ const NavBar = () => {
           />
           {/* USER PROFILE MENU */}
           {profileOpen && (
-            <div className="text-lg absolute bg-white text-black shadow-2xl shadow-black right-0 lg:right-24 p-2 min-w-52 max-h-fit rounded-lg">
+            <div className="text-lg absolute bg-white text-black shadow-2xl right-0 lg:right-24 p-2 min-w-52 max-h-fit rounded-lg">
               {isLoggedIn ? (
                 <div>
                   <div className="flex p-2 items-center gap-4 border-2 rounded-lg">
@@ -73,7 +73,7 @@ const NavBar = () => {
                       <FaRegUser className="text-gray-800 size-10" />
                     </div>
                     <div id="user-info">
-                      <span>{userInfo?.name}</span>
+                      <span>{userInfo?.fullName}</span>
                       <br />
                       <span className="text-sm font-thin">
                         {userInfo?.email}

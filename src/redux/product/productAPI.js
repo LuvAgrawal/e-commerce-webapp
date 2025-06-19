@@ -4,7 +4,7 @@ export const fetchAllProductsAPI = async () => {
   try {
     const response = await axios.get("http://localhost:8080/products");
     const data = response.data
-    console.log("Data from server",data)
+    // console.log("Data from server",data)
     return data
   } catch (error) {
     console.error(error.message);
